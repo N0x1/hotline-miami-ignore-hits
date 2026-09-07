@@ -2,7 +2,7 @@
 
 A standalone Windows trainer for the Steam **Updated** version of Hotline Miami.
 
-**[Download v1.0](https://github.com/N0x1/hotline-miami-ignore-hits/releases/tag/v0.2)**
+**[Download v1.0](https://github.com/N0x1/hotline-miami-ignore-hits/releases/tag/v1.0)**
 
 ## Quick start
 
