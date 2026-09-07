@@ -6,8 +6,8 @@ A standalone Windows trainer for the Steam **Updated** version of Hotline Miami.
 
 ## Quick start
 
-1. Download and extract `HotlineMiami-IgnoreHits-v0.2.zip` from the release.
-2. Close any older version of the trainer, then run `HotlineMiami-IgnoreHits-v0.2.exe`.
+1. Download and extract `HotlineMiami-IgnoreHits-v1.0.zip` from the release.
+2. Close any older version of the trainer, then run `HotlineMiami-IgnoreHits-v1.0.exe`.
 3. Launch Hotline Miami through Steam, select **Updated**, and wait for **Updated game connected**.
 4. Use the hotkeys below or the buttons in the trainer. Keep it running while you play.
 

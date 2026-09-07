@@ -22,7 +22,7 @@ Offline checks establish dispatch coverage, immediate return with no writes outs
 
 A boolean-looking state does not establish its storage width, and bypassing a state transition requires identifying all associated side effects. This build patches the identified damaging paths directly.
 
-## F8 score boost (v0.2)
+## F8 score boost (v1.0)
 
 The native globals accessor at `0x407890` indexes eight-byte wrappers using the pointer at preferred VA `0xFFFCD8`. Each wrapper's second dword points to a typed value object. Its expected vtable is `0xAB8BF4`, type is at +4, and payload is at +8. Getter `0x8D4E90` dispatches type 1 to an int32 read and type 2 to a double read. The utility supports both without changing types, ownership pointers or vtables.
 

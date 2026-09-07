@@ -20,7 +20,7 @@ Build and test the native patch engine without opening the game:
 
 ```powershell
 ./build.ps1
-Start-Process ./dist/HotlineMiami-IgnoreHits-v0.2.exe -ArgumentList '--self-test', 'verification-memory.txt' -WindowStyle Hidden -Wait
+Start-Process ./dist/HotlineMiami-IgnoreHits-v1.0.exe -ArgumentList '--self-test', 'verification-memory.txt' -WindowStyle Hidden -Wait
 Get-Content verification-memory.txt
 ```
 

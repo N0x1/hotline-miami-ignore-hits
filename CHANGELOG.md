@@ -1,6 +1,6 @@
 # Changes
 
-## v0.2
+## v1.0
 
 - F8 independently toggles a 200,000-point floor for the mission kill-score bonus and current/displayed score. Existing higher scores are preserved.
 - Turning F8 off stops future boosts and keeps points already added. Each new game process starts with F8 off.

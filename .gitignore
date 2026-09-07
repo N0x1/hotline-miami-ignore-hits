@@ -20,3 +20,7 @@ bin/
 obj/
 *.user
 *.suo
+
+# Superseded development downloads remain available in Git history.
+/dist/HotlineMiami-IgnoreHits-v0.2.exe
+/dist/HotlineMiami-IgnoreHits-v0.2.zip

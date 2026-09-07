@@ -11,6 +11,10 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
+[assembly: System.Reflection.AssemblyVersion("1.0.0.0")]
+[assembly: System.Reflection.AssemblyFileVersion("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.0")]
+
 internal sealed class PatchSite
 {
     public readonly int Rva;
@@ -135,7 +139,7 @@ internal sealed class Trainer : Form
     bool hotkey, scoreHotkey;
     public Trainer()
     {
-        Text = "Hotline Miami — Ignore Hits + Score · v0.2"; ClientSize = new Size(520, 406);
+        Text = "Hotline Miami — Ignore Hits + Score · v1.0"; ClientSize = new Size(520, 406);
         FormBorderStyle = FormBorderStyle.FixedSingle; MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen; BackColor = Color.FromArgb(24, 25, 34);
         ForeColor = Color.WhiteSmoke; Font = new Font("Segoe UI", 10);
