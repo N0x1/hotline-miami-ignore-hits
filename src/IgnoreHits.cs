@@ -123,16 +123,19 @@ internal sealed class MemoryPatches : IDisposable
 
 internal sealed class Trainer : Form
 {
-    readonly Label status = new Label(), detail = new Label(), keys = new Label();
-    readonly Button toggle = new Button();
+    readonly Label status = new Label(), detail = new Label(), keys = new Label(), scoreKeys = new Label();
+    readonly Button toggle = new Button(), scoreToggle = new Button();
     readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
     Process game;
     MemoryPatches patches;
+    ScoreMemory scoreMemory;
+    long imageBase;
+    bool scoreEnabled, scoreApplied;
     string lastError = "";
-    bool hotkey;
+    bool hotkey, scoreHotkey;
     public Trainer()
     {
-        Text = "Hotline Miami — Ignore Hits"; ClientSize = new Size(520, 310);
+        Text = "Hotline Miami — Ignore Hits + Score · v0.2"; ClientSize = new Size(520, 406);
         FormBorderStyle = FormBorderStyle.FixedSingle; MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen; BackColor = Color.FromArgb(24, 25, 34);
         ForeColor = Color.WhiteSmoke; Font = new Font("Segoe UI", 10);
@@ -143,8 +146,12 @@ internal sealed class Trainer : Form
         toggle.Font = new Font("Segoe UI", 13, FontStyle.Bold); toggle.AccessibleName = "Toggle ignore hits";
         toggle.Click += delegate { Toggle(); };
         keys.Location = new Point(28, 231); keys.Size = new Size(464, 24);
-        Label note = new Label { Text = "Experimental build · gameplay verification pending", Location = new Point(28, 273), Size = new Size(464, 23), ForeColor = Color.Silver, Font = new Font("Segoe UI", 9) };
-        Controls.AddRange(new Control[] { title, status, detail, toggle, keys, note });
+        scoreToggle.Location = new Point(28, 269); scoreToggle.Size = new Size(464, 50); scoreToggle.FlatStyle = FlatStyle.Flat;
+        scoreToggle.Font = new Font("Segoe UI", 12, FontStyle.Bold); scoreToggle.AccessibleName = "Toggle mission score boost";
+        scoreToggle.Click += delegate { ToggleScore(); };
+        scoreKeys.Location = new Point(28, 329); scoreKeys.Size = new Size(464, 25);
+        Label note = new Label { Text = "F7 gameplay confirmed · F8 ready for gameplay testing", Location = new Point(28, 372), Size = new Size(464, 23), ForeColor = Color.Silver, Font = new Font("Segoe UI", 9) };
+        Controls.AddRange(new Control[] { title, status, detail, toggle, keys, scoreToggle, scoreKeys, note });
         timer.Interval = 900; timer.Tick += delegate { Poll(); }; timer.Start();
         FormClosing += ClosingTrainer;
         PaintState();
@@ -153,19 +160,25 @@ internal sealed class Trainer : Form
     {
         base.OnHandleCreated(e); hotkey = Native.RegisterHotKey(Handle, 7, 0x4000, 0x76);
         keys.Text = hotkey ? "F7  ·  Toggle protection on / off" : "F7 is used by another app. Use the button to toggle.";
+        scoreHotkey = Native.RegisterHotKey(Handle, 8, 0x4000, 0x77);
+        scoreKeys.Text = scoreHotkey ? "F8  ·  Keep mission score at 200,000 or higher" : "F8 is used by another app. Use the score button.";
     }
     protected override void OnHandleDestroyed(EventArgs e)
     {
         if (hotkey) Native.UnregisterHotKey(Handle, 7);
+        if (scoreHotkey) Native.UnregisterHotKey(Handle, 8);
         base.OnHandleDestroyed(e);
     }
     protected override void WndProc(ref Message m)
     {
         if (m.Msg == 0x312 && m.WParam.ToInt32() == 7) Toggle();
+        if (m.Msg == 0x312 && m.WParam.ToInt32() == 8) ToggleScore();
         base.WndProc(ref m);
     }
     void Detach()
     {
+        scoreEnabled = false; scoreApplied = false;
+        if (scoreMemory != null) { scoreMemory.Dispose(); scoreMemory = null; }
         if (patches != null) { patches.Dispose(); patches = null; }
         if (game != null) { game.Dispose(); game = null; }
     }
@@ -186,6 +199,7 @@ internal sealed class Trainer : Form
                         ProcessModule module = candidate.MainModule;
                         Program.CheckFile(module.FileName);
                         patches = new MemoryPatches(candidate.Id, module.BaseAddress, Definitions.Sites);
+                        imageBase = module.BaseAddress.ToInt64();
                         game = candidate; candidate = null; lastError = "";
                         Program.Log("Attached to HotlineGL PID " + game.Id + "; protection " + (patches.Enabled ? "ON (recovered)" : "OFF"));
                     }
@@ -195,6 +209,25 @@ internal sealed class Trainer : Form
             }
         }
         catch (Exception ex) { if (lastError != ex.Message) Program.Log(ex.Message); lastError = ex.Message; }
+        if (game != null && scoreEnabled)
+        {
+            try { scoreApplied = ScoreBoost.Apply(scoreMemory, imageBase); }
+            catch (Exception ex) { scoreEnabled = false; lastError = "F8 stopped: " + ex.Message; Program.Log(lastError); }
+        }
+        PaintState();
+    }
+    void ToggleScore()
+    {
+        // Disable first so pressing F8 off never applies one final boost.
+        if (scoreEnabled) { scoreEnabled = false; Program.Log("F8 score boost OFF; previously added points retained."); PaintState(); return; }
+        Poll(); if (patches == null) return;
+        try
+        {
+            if (scoreMemory == null) scoreMemory = new ScoreMemory(game.Id);
+            scoreApplied = ScoreBoost.Apply(scoreMemory, imageBase);
+            scoreEnabled = true; lastError = ""; Program.Log("F8 score boost ON");
+        }
+        catch (Exception ex) { lastError = "F8: " + ex.Message; Program.Log(lastError); }
         PaintState();
     }
     void Toggle()
@@ -212,6 +245,9 @@ internal sealed class Trainer : Form
         toggle.Enabled = attached;
         toggle.Text = on ? "PROTECTION ON  ·  F7 to turn off" : "PROTECTION OFF  ·  F7 to turn on";
         toggle.BackColor = on ? Color.FromArgb(27, 100, 86) : Color.FromArgb(48, 49, 66);
+        scoreToggle.Enabled = attached;
+        scoreToggle.Text = scoreEnabled ? (scoreApplied ? "SCORE BOOST ON  ·  F8 to turn off" : "SCORE BOOST ON  ·  Waiting for mission") : "SCORE BOOST OFF  ·  F8 to turn on";
+        scoreToggle.BackColor = scoreEnabled ? Color.FromArgb(107, 69, 130) : Color.FromArgb(48, 49, 66);
     }
     void ClosingTrainer(object sender, FormClosingEventArgs e)
     {
@@ -244,7 +280,7 @@ internal static class Program
     {
         if (args.Length == 2 && args[0] == "--self-test")
         {
-            try { File.WriteAllText(args[1], Tests.Run()); return 0; }
+            try { File.WriteAllText(args[1], Tests.Run() + ScoreTests.Run()); return 0; }
             catch (Exception ex) { File.WriteAllText(args[1], "FAIL\n" + ex); return 1; }
         }
         bool created;

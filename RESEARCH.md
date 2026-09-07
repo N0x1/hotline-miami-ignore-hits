@@ -21,3 +21,13 @@ The utility computes the on-disk executable's SHA-256, obtains the actual proces
 Offline checks establish dispatch coverage, immediate return with no writes outside the emulated stack, unchanged unrelated collision callbacks, and exact restoration. Native fixture tests establish repeated toggling, page-protection restoration, failed-transaction rollback, conflict rejection and prior-session recovery. They do not establish behaviour in actual combat, story sequences, bosses or game progression. In particular, caller-side cleanup after a skipped death routine may still run. No game UI was controlled after the user requested avoiding Computer Use.
 
 The developer's intent cannot be inferred from a 1/0 observation. A boolean-looking state does not establish its storage width, and bypassing a state transition requires identifying all associated side effects. This build patches the identified damaging paths directly.
+
+## F8 score boost (v0.2)
+
+The native globals accessor at `0x407890` indexes eight-byte wrappers using the pointer at preferred VA `0xFFFCD8`. Each wrapper's second dword points to a typed value object. Its expected vtable is `0xAB8BF4`, type is at +4, and payload is at +8. Getter `0x8D4E90` dispatches type 1 to an int32 read and type 2 to a double read. The utility supports both without changing types, ownership pointers or vtables.
+
+The score reset routine `0x805BC0` identifies globals `drawscore=0x254`, `myscore=0x69`, `killscore=0x24A` and `time=0x24F`. Initialization `0x805DC0` identifies `currentlevel=0x271`. Results initializer `0x5C0BD0` resets `myscore`, copies `killscore` to bonus[0], then totals the bonus array into `myscore`. Therefore a display-only edit would be lost; F8 raises the kill-score component as well.
+
+The native max-points routine at `0x8131F0` contains 16 mission-specific values plus a 40,000 fallback; its largest value is 138,000. F8's 200,000 floor exceeds every extracted value. Rank calculation consumes `myscore` in the score-details initializer `0x6A7780`. The public source comparison uses strictly greater-than max points for A+.
+
+F8 is a separate timer-driven data operation. It briefly suspends the target process, resolves current pointers, validates mission time, level, numeric types and plausible values, raises only values below the floor, verifies writes, and resumes the process in `finally`. Failed writes attempt rollback while still paused. Disabling F8 does not subtract points, and no high-score or achievement arrays are written directly. The game may persist the resulting score normally. Initial F7 gameplay was confirmed by the user; F8 still needs an actual mission/result-screen check.

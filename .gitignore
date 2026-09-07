@@ -8,6 +8,8 @@
 /dist/*
 !/dist/HotlineMiami-IgnoreHits.exe
 !/dist/HotlineMiami-IgnoreHits.zip
+!/dist/HotlineMiami-IgnoreHits-v*.exe
+!/dist/HotlineMiami-IgnoreHits-v*.zip
 
 *.log
 __pycache__/

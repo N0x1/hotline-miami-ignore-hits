@@ -1,0 +1,1 @@
+PASS: native x64 trainer backend paused an owned x86 fixture process, resolved score pointers, wrote double/int values, resumed it and verified 200,000 scores. No game process touched.

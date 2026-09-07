@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "globals_pointer_rva": "0xBFFCD8",
+  "numeric_vtable_rva": "0x6B8BF4",
+  "fields": {
+    "killscore": "0x24A",
+    "myscore": "0x69",
+    "drawscore": "0x254"
+  },
+  "native_threshold_values": [
+    28000,
+    18000,
+    38000,
+    47000,
+    50000,
+    60000,
+    34000,
+    58000,
+    70000,
+    68000,
+    138000,
+    74000,
+    100000,
+    74000,
+    18000,
+    50000,
+    40000
+  ],
+  "maximum_threshold": 138000,
+  "boost_floor": 200000,
+  "scope": "Static native storage, reset, tally and max-points verification. F8 gameplay test pending."
+}

@@ -11,6 +11,7 @@ python research/inspect_game.py wad
 python research/map_objects.py
 python research/emulate.py
 python research/verify_patch.py
+python research/verify_score.py
 ```
 
 `verify_patch.py` checks the executable against the committed patch manifest. `make_manifest.py` regenerates that manifest and `src/Definitions.cs`; use it only after verifying patch addresses for the target build, since it records the hash of whichever executable is installed.
@@ -19,8 +20,10 @@ Build and test the native patch engine without opening the game:
 
 ```powershell
 ./build.ps1
-Start-Process ./dist/HotlineMiami-IgnoreHits.exe -ArgumentList '--self-test', 'verification-memory.txt' -WindowStyle Hidden -Wait
+Start-Process ./dist/HotlineMiami-IgnoreHits-v0.2.exe -ArgumentList '--self-test', 'verification-memory.txt' -WindowStyle Hidden -Wait
 Get-Content verification-memory.txt
 ```
 
 The self-test uses memory allocated by its own process. Neither this test nor offline x86 emulation establishes actual gameplay behaviour; see the root README for the pending combat checks.
+
+`./test.ps1` also compiles an owned 32-bit fixture process and tests the native F8 pause/read/write/resume path against it. It never attaches that test to the game.
