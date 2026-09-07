@@ -4,7 +4,7 @@ Target: `C:\Program Files (x86)\Steam\steamapps\common\hotline_miami\HotlineGL.e
 
 SHA-256: `351D096EF0CE221A31416307904A4C10A18487FBE4DA70BF2AC834029614F890`.
 
-The executable is 32-bit native x86, with preferred image base `0x400000`. The supplied path contained a separator typo; the actual installed directory is `hotline_miami`.
+The executable is 32-bit native x86, with preferred image base `0x400000`.
 
 The archive is the first game's WAD variant: a 32-bit data offset, file count, then entries containing a length-prefixed filename, 32-bit size, and 32-bit relative offset. Its collision-event data is 854 object entries with 160 total collision routes. Sprite paths and parent relationships permit object classification even though readable GML names are absent from the executable's gameplay logic.
 
@@ -18,9 +18,9 @@ Each selected entry starts with `push ebp` (`55`). Enabling replaces that byte w
 
 The utility computes the on-disk executable's SHA-256, obtains the actual process module base for ASLR, checks every five-byte entry signature, applies each byte under temporary writable protection, restores the previous page protection, flushes the instruction cache and verifies the result. Failed writes trigger rollback. Full prior patch state can be recovered after a utility crash; mixed or foreign code is refused.
 
-Offline checks establish dispatch coverage, immediate return with no writes outside the emulated stack, unchanged unrelated collision callbacks, and exact restoration. Native fixture tests establish repeated toggling, page-protection restoration, failed-transaction rollback, conflict rejection and prior-session recovery. They do not establish behaviour in actual combat, story sequences, bosses or game progression. In particular, caller-side cleanup after a skipped death routine may still run. No game UI was controlled after the user requested avoiding Computer Use.
+Offline checks establish dispatch coverage, immediate return with no writes outside the emulated stack, unchanged unrelated collision callbacks, and exact restoration. Native fixture tests establish repeated toggling, page-protection restoration, failed-transaction rollback, conflict rejection and prior-session recovery. They do not establish behaviour in actual combat, story sequences, bosses or game progression. In particular, caller-side cleanup after a skipped death routine may still run.
 
-The developer's intent cannot be inferred from a 1/0 observation. A boolean-looking state does not establish its storage width, and bypassing a state transition requires identifying all associated side effects. This build patches the identified damaging paths directly.
+A boolean-looking state does not establish its storage width, and bypassing a state transition requires identifying all associated side effects. This build patches the identified damaging paths directly.
 
 ## F8 score boost (v0.2)
 
@@ -31,3 +31,12 @@ The score reset routine `0x805BC0` identifies globals `drawscore=0x254`, `myscor
 The native max-points routine at `0x8131F0` contains 16 mission-specific values plus a 40,000 fallback; its largest value is 138,000. F8's 200,000 floor exceeds every extracted value. Rank calculation consumes `myscore` in the score-details initializer `0x6A7780`. The public source comparison uses strictly greater-than max points for A+.
 
 F8 is a separate timer-driven data operation. It briefly suspends the target process, resolves current pointers, validates mission time, level, numeric types and plausible values, raises only values below the floor, verifies writes, and resumes the process in `finally`. Failed writes attempt rollback while still paused. Disabling F8 does not subtract points, and no high-score or achievement arrays are written directly. The game may persist the resulting score normally. Initial F7 gameplay was confirmed by the user; F8 still needs an actual mission/result-screen check.
+
+## References
+
+- [Fearless Revolution discussion](https://fearlessrevolution.com/viewtopic.php?t=1320)
+- [WeMod author's explanation of the engine change](https://community.wemod.com/t/hotline-miami-cheats-and-trainer-for-steam/53290)
+- [Community-maintained source used for comparison](https://github.com/Pi0h1/HotlineMiami.gmx)
+- [HLMWadExplorer archive reader](https://github.com/TcT2k/HLMWadExplorer/blob/master/WADArchive.cpp)
+
+Third-party game source and game assets are not included in this repository or its releases.
