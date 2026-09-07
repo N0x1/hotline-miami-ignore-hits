@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "game_sha256": "351D096EF0CE221A31416307904A4C10A18487FBE4DA70BF2AC834029614F890",
+  "patch_sites": 13,
+  "collision_routes_checked": 160,
+  "player_enemy_bullet_routes_verified": 32,
+  "unrelated_collision_routes_unchanged": 128,
+  "memory_writes_outside_emulator_stack": 0,
+  "restoration": "all original bytes restored",
+  "gameplay_tested": false,
+  "scope": "x86 emulation and static dispatch verification; no game was launched or attached"
+}

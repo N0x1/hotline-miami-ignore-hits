@@ -1,0 +1,6 @@
+PASS: 10 enable/disable cycles over all 13 real-memory fixture sites.
+PASS: original execute/read protection restored at all patch sites.
+PASS: mid-transaction failures roll back in both directions.
+PASS: unexpected code is rejected before writes.
+PASS: fully patched session recovery; stale ownership rejected.
+PASS: all fixture bytes restored exactly. No game process touched.

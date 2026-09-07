@@ -1,0 +1,20 @@
+# Only original research tools; extracted game data and downloaded sources stay local.
+/research/*
+!/research/*.py
+!/research/requirements.txt
+!/research/README.md
+
+# Keep the initial testable binary/package with its source baseline.
+/dist/*
+!/dist/HotlineMiami-IgnoreHits.exe
+!/dist/HotlineMiami-IgnoreHits.zip
+
+*.log
+__pycache__/
+*.pyc
+.venv/
+.vs/
+bin/
+obj/
+*.user
+*.suo

@@ -1,0 +1,84 @@
+{
+  "executable": "HotlineGL.exe",
+  "sha256": "351D096EF0CE221A31416307904A4C10A18487FBE4DA70BF2AC834029614F890",
+  "sites": [
+    {
+      "name": "Jacket enemy-bullet collision",
+      "rva": 294000,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Human-shield enemy-bullet collision",
+      "rva": 339568,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Alternate Jacket enemy-bullet collision",
+      "rva": 421728,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Biker enemy-bullet collision",
+      "rva": 478368,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Biker-derived state enemy-bullet collision",
+      "rva": 511920,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Alternate player state enemy-bullet collision",
+      "rva": 761184,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Execution state enemy-bullet collision",
+      "rva": 782432,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Special execution state enemy-bullet collision",
+      "rva": 841472,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Shared execution enemy-bullet collision wrapper",
+      "rva": 2370112,
+      "original": "55 8B EC 8B 45",
+      "enabled": "C3"
+    },
+    {
+      "name": "Shared player melee death",
+      "rva": 3427136,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Player dog death",
+      "rva": 3444736,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Player panther death",
+      "rva": 3453552,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    },
+    {
+      "name": "Alternate player dog death",
+      "rva": 3461872,
+      "original": "55 8B EC 6A FF",
+      "enabled": "C3"
+    }
+  ]
+}

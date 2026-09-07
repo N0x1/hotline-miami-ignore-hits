@@ -1,0 +1,23 @@
+# Build-specific findings
+
+Target: `C:\Program Files (x86)\Steam\steamapps\common\hotline_miami\HotlineGL.exe`.
+
+SHA-256: `351D096EF0CE221A31416307904A4C10A18487FBE4DA70BF2AC834029614F890`.
+
+The executable is 32-bit native x86, with preferred image base `0x400000`. The supplied path contained a separator typo; the actual installed directory is `hotline_miami`.
+
+The archive is the first game's WAD variant: a 32-bit data offset, file count, then entries containing a length-prefixed filename, 32-bit size, and 32-bit relative offset. Its collision-event data is 854 object entries with 160 total collision routes. Sprite paths and parent relationships permit object classification even though readable GML names are absent from the executable's gameplay logic.
+
+Key object IDs: 44 is the player parent; 0 is a normal player state; 160 uses the human-shield sprite; 589 is the Biker player parent for 656. Enemy bullet ID is 25; player bullet ID is 8. Object 26 uses the dead-player sprite. These are object IDs, not health addresses.
+
+The engine's collision dispatcher at preferred VA `0x41EF00` resolves callbacks through `0x7074D0`. The latter selects event tables and object-specific selector functions. Executing that selector in Unicorn maps all 160 routes without launching the game. Thirty-two routes from player descendants target enemy bullet 25; they resolve to ten unique callback functions. One callback (`0x659970`) is already empty and is left untouched. The nine other callbacks, plus four shared player-death functions, form the patch manifest.
+
+Shared death entry points (preferred VAs): `0x744B40` for melee, `0x749000` and `0x74D2F0` for the two dog branches, `0x74B270` for panthers. Melee has 15 direct callers in the gameplay code; dog routines are called from the two dog step variants; panther calls occur in its attack code. These are cdecl routines with caller-cleaned arguments; inspected call sites do not consume a return value. Their behaviour and player iteration correspond to the player-death source routines used for comparison. The Original-version cheat table's string patches cannot be applied directly to this executable.
+
+Each selected entry starts with `push ebp` (`55`). Enabling replaces that byte with `ret` (`C3`), before prologue, state mutation or death animation. A single-byte entry patch avoids writing a multi-byte detour while game threads are running. Disabling restores `55`. A call already executing inside a damage handler can still complete, so protection should be enabled before combat. No remote allocation, injected DLL, executable-on-disk patch, pointer freeze, AI freeze or save edit is used.
+
+The utility computes the on-disk executable's SHA-256, obtains the actual process module base for ASLR, checks every five-byte entry signature, applies each byte under temporary writable protection, restores the previous page protection, flushes the instruction cache and verifies the result. Failed writes trigger rollback. Full prior patch state can be recovered after a utility crash; mixed or foreign code is refused.
+
+Offline checks establish dispatch coverage, immediate return with no writes outside the emulated stack, unchanged unrelated collision callbacks, and exact restoration. Native fixture tests establish repeated toggling, page-protection restoration, failed-transaction rollback, conflict rejection and prior-session recovery. They do not establish behaviour in actual combat, story sequences, bosses or game progression. In particular, caller-side cleanup after a skipped death routine may still run. No game UI was controlled after the user requested avoiding Computer Use.
+
+The developer's intent cannot be inferred from a 1/0 observation. A boolean-looking state does not establish its storage width, and bypassing a state transition requires identifying all associated side effects. This build patches the identified damaging paths directly.
