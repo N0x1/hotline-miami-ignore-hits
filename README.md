@@ -1,35 +1,33 @@
 # Hotline Miami — Ignore Hits + Score
 
-A standalone Windows trainer for the Steam **Updated** version of Hotline Miami.
+A standalone trainer for the Steam **Updated** version of Hotline Miami on Windows.
 
 **[Download v1.0.1](https://github.com/N0x1/hotline-miami-ignore-hits/releases/tag/v1.0.1)**
 
-## Quick start
+## How to use
 
-1. Download and extract `HotlineMiami-IgnoreHits-v1.0.1.zip` from the release.
-2. Close any older version of the trainer, then run `HotlineMiami-IgnoreHits-v1.0.1.exe`.
-3. Launch Hotline Miami through Steam, select **Updated**, and wait for **Updated game connected**.
-4. Use the hotkeys below or the buttons in the trainer. Keep it running while you play.
+1. Download and extract the ZIP, then run `HotlineMiami-IgnoreHits-v1.0.1.exe`. Close any older trainer first.
+2. Launch the game through Steam and choose **Updated**.
+3. Wait for the trainer to connect. Keep it open while playing.
 
-| Hotkey | Action |
+| Key | Feature |
 | --- | --- |
-| **F7** | Toggle invincibility against the identified bullet, melee, dog and panther attacks. |
-| **F8** | Toggle a **200,000-point minimum score** boost, intended for A+ mission ranks. |
+| **F7** | Toggle invincibility. |
+| **F8** | Toggle a minimum score of **200,000**, intended for A+ ranks. |
 
-Press the same key again to switch an option off. Both options work independently.
+The buttons work too. Press the same key again to turn a feature off.
 
-## Good to know
+## Notes
 
-- Enable F7 before taking a hit; it cannot revive you. Closing the trainer normally restores damage. Restart the game if the trainer crashes.
-- You can enable F8 before a mission or during play. It arms while waiting and applies automatically once the mission timer starts; leave it on through completion. Switching it off **keeps points already added**; the game may save boosted results.
-- F7 has been confirmed working in gameplay. **F8 score writes have been verified in a running mission; the final A+ result still needs confirmation.** Special scripted deaths and boss events are not fully tested.
-- Only the verified `HotlineGL.exe` build is supported. The trainer checks compatibility automatically. The Original version and Hotline Miami 2 are unsupported.
-- Nothing needs to be installed in the game folder. If a hotkey is unavailable, use its button. Errors are recorded in `IgnoreHits.log` beside the trainer.
+- Turn F7 on before taking damage. It cannot revive you. Some scripted deaths and boss events may still require normal damage.
+- F8 can be enabled before or during a mission. It applies when the mission timer starts. Turning it off keeps points already added, and the game may save the result.
+- Invincibility and the score boost have been tested in-game. The final A+ grade has not been separately verified.
+- Only the supported `HotlineGL.exe` build works. Compatibility is checked automatically. The Original version and Hotline Miami 2 are not supported.
+- No installation in the game folder is needed. Closing the trainer normally restores damage; restart the game if the trainer crashes.
+- The EXE is unsigned. Errors are saved in `IgnoreHits.log` beside it.
 
-## Source and tests
+## Source
 
-The repository contains development source, tests and research. Ready-to-run downloads are on the Releases page; `dist/` is generated locally when you build.
+Build with `.\build.ps1` in Windows PowerShell. Run tests with `.\tests\run.ps1`. Downloads are kept on the Releases page.
 
-Build with `./build.ps1` in Windows PowerShell; run automated checks with `./tests/run.ps1`. Uses the Windows .NET Framework compiler.
-
-See [changes](https://github.com/N0x1/hotline-miami-ignore-hits/blob/main/CHANGELOG.md), [technical findings and references](https://github.com/N0x1/hotline-miami-ignore-hits/blob/main/RESEARCH.md), and [research tools](https://github.com/N0x1/hotline-miami-ignore-hits/blob/main/research/README.md) for details.
+[Changes](CHANGELOG.md) · [Build and review information](REVIEW.md) · [Technical notes](RESEARCH.md)

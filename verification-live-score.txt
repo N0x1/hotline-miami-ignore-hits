@@ -2,4 +2,4 @@ PASS: corrected production ScoreBoost.Apply ran against the supported HotlineGL 
 Before: mission time (0x131) = 10321; unrelated counter (0x24F) = 0; kill score = 0; mission score = 0; displayed score = 0.
 After: mission time = 10321; unrelated counter = 0; kill score = 200000; mission score = 200000; displayed score = 200000.
 Scope: live score-memory update and readback; final results-screen A+ grade is not yet verified.
-User confirmed the score boost appeared in the game after this update.
+The 200,000-point score was also confirmed on screen.

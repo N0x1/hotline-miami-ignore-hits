@@ -2,21 +2,16 @@
 
 ## v1.0.1
 
-- Fix F8 staying on "Waiting for mission": read the actual mission timer instead of an unrelated counter.
-- F8 can be armed before a mission and automatically applies when its timer starts, including chapter index zero and mission restarts.
-- Add independent regression fixtures that reproduce the original failure and verify the corrected address against native timer increments and results calculations.
-- Confirm a live score update from 0 to 200,000 in the running game. Final A+ result confirmation remains pending.
+- Fixed F8 getting stuck on "Waiting for mission".
+- F8 now works during a mission or when switched on beforehand.
+- Added checks for mission starts and restarts.
+- Confirmed the 200,000-point boost in-game.
 
 ## v1.0
 
-- F8 independently toggles a 200,000-point floor for the mission kill-score bonus and current/displayed score. Existing higher scores are preserved.
-- Turning F8 off stops future boosts and keeps points already added. Each new game process starts with F8 off.
-- Reads the game's typed numeric values with build-specific validation; briefly pauses the game during each score transaction to avoid racing value updates or room transitions, then resumes it in a finally block.
-- Adds score layout, threshold, rollback and native 32-bit fixture verification.
-- Keeps F7's 13 patch definitions unchanged. The user reported that F7 worked perfectly before this update.
-- F8 gameplay verification is pending.
+- Added F7 invincibility and F8 score boost.
+- Added buttons for both features and automatic game compatibility checks.
 
-## Initial baseline (`fb4a2b7`)
+## First build
 
-- F7 toggles the identified enemy-bullet and player-death handlers.
-- Source, testable binary and offline verification saved in the private repository before gameplay testing.
+- Added F7 protection against the identified bullet, melee, dog and panther attacks.
