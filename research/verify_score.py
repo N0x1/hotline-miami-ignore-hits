@@ -22,6 +22,12 @@ assert global_indices[:10] == [0x254,0x69,0x243,0x28b,0x24a,0x246,0x2a6,0x295,0x
 assert raw(0x5c0e5a,4).hex() == '6a006a69'
 assert raw(0x5c0e6f,5).hex() == '684a020000'
 assert raw(0x5c13be,2).hex() == '6a69'
+# Mission time is 0x131: gameplay increments it by one and results use it
+# in the 18000-time bonus. 0x24F was incorrectly identified from reset order.
+assert raw(0x5d9e9b,7).hex() == '6a016831010000'
+assert raw(0x5de0e1,7).hex() == '6a016831010000'
+assert raw(0x5c0f92,5).hex() == '6831010000'
+assert raw(0x6a7cb5,5).hex() == '6831010000'
 thresholds=[]
 for ins in instructions(0x8131f0):
     if ins.address>=0x814240:break
@@ -31,8 +37,8 @@ for ins in instructions(0x8131f0):
 assert len(thresholds)==17 and max(thresholds)==138000
 assert 200000>max(thresholds)
 report=dict(result='PASS', globals_pointer_rva='0xBFFCD8', numeric_vtable_rva='0x6B8BF4',
- fields={'killscore':'0x24A','myscore':'0x69','drawscore':'0x254'},
+ fields={'killscore':'0x24A','myscore':'0x69','drawscore':'0x254','mission_time':'0x131'},
  native_threshold_values=thresholds, maximum_threshold=138000, boost_floor=200000,
- scope='Static native storage, reset, tally and max-points verification. F8 gameplay test pending.')
+ scope='Static native storage, timer increments, reset, tally and max-points verification. Live score confirmation is recorded separately in verification-live-score.txt; final A+ grade not verified.')
 (ROOT.parent/'verification-score.json').write_text(json.dumps(report,indent=2))
 print(json.dumps(report,indent=2))

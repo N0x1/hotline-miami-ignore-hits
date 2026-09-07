@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 & (Join-Path $taskRoot 'build.ps1')
-$taskExe = Join-Path $taskRoot 'dist\HotlineMiami-IgnoreHits-v1.0.exe'
+$taskExe = Join-Path $taskRoot 'dist\HotlineMiami-IgnoreHits-v1.0.1.exe'
 $taskResult = Join-Path $taskRoot 'verification-memory.txt'
 $taskRun = Start-Process -FilePath $taskExe -ArgumentList '--self-test', ('"' + $taskResult + '"') -WindowStyle Hidden -Wait -PassThru
 if ($taskRun.ExitCode -ne 0) { throw 'Self-tests failed.' }

@@ -46,7 +46,7 @@ internal static class ScoreBoost
     public const double Floor = 200000;
     public const int GlobalsRva = 0xBFFCD8, ValueVtableRva = 0x6B8BF4;
     public const int KillScore = 0x24A, MissionScore = 0x69, DisplayScore = 0x254;
-    public const int MissionTime = 0x24F, CurrentLevel = 0x271;
+    public const int MissionTime = 0x131, CurrentLevel = 0x271;
     sealed class Number
     {
         public long Address;
@@ -124,7 +124,9 @@ internal static class ScoreTests
         public Fixture()
         {
             Put(ScoreBoost.GlobalsRva, BitConverter.GetBytes((uint)(Image + Table)));
-            Field(ScoreBoost.MissionTime, 2, 60);
+            // Independent addresses from the native timer increment, not the production constant.
+            Field(0x131, 2, 60);
+            Field(0x24F, 1, 0);
             Field(ScoreBoost.CurrentLevel, 1, 1);
             Field(ScoreBoost.KillScore, 2, 500);
             Field(ScoreBoost.MissionScore, 2, 1000);
@@ -160,7 +162,13 @@ internal static class ScoreTests
         Check(!f.Paused && f.Pauses==f.Resumes, "resume on success");
         int count = f.Writes; ScoreBoost.Apply(f, Fixture.Image); Check(f.Writes==count, "no repeated writes above floor");
         f.Field(ScoreBoost.KillScore, 2, 350000); ScoreBoost.Apply(f, Fixture.Image); Check(f.Value(ScoreBoost.KillScore)==350000, "higher score preserved");
-        f = new Fixture(); f.Field(ScoreBoost.MissionTime, 2, 0); Check(!ScoreBoost.Apply(f, Fixture.Image) && f.Writes==0 && !f.Paused, "wait before mission");
+        f = new Fixture(); f.Field(0x131, 2, 0); Check(!ScoreBoost.Apply(f, Fixture.Image) && f.Writes==0 && !f.Paused, "wait before mission");
+        f.Field(0x131, 1, 1); f.Field(ScoreBoost.CurrentLevel, 1, 0);
+        Check(ScoreBoost.Apply(f, Fixture.Image) && f.Value(ScoreBoost.KillScore)==200000, "armed before mission activates on next poll, including level zero");
+        Check(f.Value(0x24F)==0 && f.Value(0x131)==1, "unrelated counter and mission timer preserved");
+        f.Field(0x131, 1, 0); f.Field(ScoreBoost.KillScore, 1, 0); f.Field(ScoreBoost.MissionScore, 1, 0); f.Field(ScoreBoost.DisplayScore, 1, 0);
+        count = f.Writes; Check(!ScoreBoost.Apply(f, Fixture.Image) && f.Writes==count, "wait during mission restart");
+        f.Field(0x131, 1, 60); Check(ScoreBoost.Apply(f, Fixture.Image) && f.Value(ScoreBoost.KillScore)==200000, "reapply after mission restart");
         f = new Fixture(); f.Field(ScoreBoost.MissionScore, 4, 1000); bool failed = false;
         try { ScoreBoost.Apply(f, Fixture.Image); } catch (InvalidOperationException) { failed = true; }
         Check(failed && f.Writes==0 && !f.Paused, "reject unsupported type before writes");
@@ -170,6 +178,6 @@ internal static class ScoreTests
         f = new Fixture(); byte[] before = (byte[])f.Data.Clone(); f.FailWrite = 1; failed = false;
         try { ScoreBoost.Apply(f, Fixture.Image); } catch (IOException) { failed = true; }
         Check(failed && before.SequenceEqual(f.Data) && !f.Paused, "rollback and resume on write failure");
-        return "PASS: F8 score floor, int/double fields, higher-score preservation, idle missions, type/value guards, rollback and balanced pause/resume.\n";
+        return "PASS: F8 actual timer with unrelated zero counter, pre-mission activation, level zero, mission restart, score floor, int/double fields, higher scores, type/value guards, rollback and balanced pause/resume.\n";
     }
 }

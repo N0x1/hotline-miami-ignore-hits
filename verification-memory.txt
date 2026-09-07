@@ -4,4 +4,4 @@ PASS: mid-transaction failures roll back in both directions.
 PASS: unexpected code is rejected before writes.
 PASS: fully patched session recovery; stale ownership rejected.
 PASS: all fixture bytes restored exactly. No game process touched.
-PASS: F8 score floor, int/double fields, higher-score preservation, idle missions, type/value guards, rollback and balanced pause/resume.
+PASS: F8 actual timer with unrelated zero counter, pre-mission activation, level zero, mission restart, score floor, int/double fields, higher scores, type/value guards, rollback and balanced pause/resume.

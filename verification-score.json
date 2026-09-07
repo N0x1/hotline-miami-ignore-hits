@@ -5,7 +5,8 @@
   "fields": {
     "killscore": "0x24A",
     "myscore": "0x69",
-    "drawscore": "0x254"
+    "drawscore": "0x254",
+    "mission_time": "0x131"
   },
   "native_threshold_values": [
     28000,
@@ -28,5 +29,5 @@
   ],
   "maximum_threshold": 138000,
   "boost_floor": 200000,
-  "scope": "Static native storage, reset, tally and max-points verification. F8 gameplay test pending."
+  "scope": "Static native storage, timer increments, reset, tally and max-points verification. Live score confirmation is recorded separately in verification-live-score.txt; final A+ grade not verified."
 }

@@ -22,7 +22,7 @@ internal static class ScoreFixture
         try
         {
             Put(0xBFFCD8, BitConverter.GetBytes((uint)(image.ToInt64()+0x10000)));
-            Field(0x24F, 2, 60); Field(0x271, 1, 1);
+            Field(0x131, 2, 60); Field(0x24F, 1, 0); Field(0x271, 1, 0);
             Field(0x24A, 2, 500); Field(0x69, 2, 1000); Field(0x254, 1, 995);
             Console.WriteLine(image.ToInt64()); Console.Out.Flush();
             if (Console.ReadLine()!="check") return 2;

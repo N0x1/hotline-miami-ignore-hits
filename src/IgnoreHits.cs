@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-[assembly: System.Reflection.AssemblyVersion("1.0.0.0")]
-[assembly: System.Reflection.AssemblyFileVersion("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersion("1.0")]
+[assembly: System.Reflection.AssemblyVersion("1.0.1.0")]
+[assembly: System.Reflection.AssemblyFileVersion("1.0.1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.0.1")]
 
 internal sealed class PatchSite
 {
@@ -139,7 +139,7 @@ internal sealed class Trainer : Form
     bool hotkey, scoreHotkey;
     public Trainer()
     {
-        Text = "Hotline Miami — Ignore Hits + Score · v1.0"; ClientSize = new Size(520, 406);
+        Text = "Hotline Miami — Ignore Hits + Score · v1.0.1"; ClientSize = new Size(520, 406);
         FormBorderStyle = FormBorderStyle.FixedSingle; MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen; BackColor = Color.FromArgb(24, 25, 34);
         ForeColor = Color.WhiteSmoke; Font = new Font("Segoe UI", 10);
@@ -154,7 +154,7 @@ internal sealed class Trainer : Form
         scoreToggle.Font = new Font("Segoe UI", 12, FontStyle.Bold); scoreToggle.AccessibleName = "Toggle mission score boost";
         scoreToggle.Click += delegate { ToggleScore(); };
         scoreKeys.Location = new Point(28, 329); scoreKeys.Size = new Size(464, 25);
-        Label note = new Label { Text = "F7 gameplay confirmed · F8 ready for gameplay testing", Location = new Point(28, 372), Size = new Size(464, 23), ForeColor = Color.Silver, Font = new Font("Segoe UI", 9) };
+        Label note = new Label { Text = "F7 protection + F8 score boost · gameplay confirmed", Location = new Point(28, 372), Size = new Size(464, 23), ForeColor = Color.Silver, Font = new Font("Segoe UI", 9) };
         Controls.AddRange(new Control[] { title, status, detail, toggle, keys, scoreToggle, scoreKeys, note });
         timer.Interval = 900; timer.Tick += delegate { Poll(); }; timer.Start();
         FormClosing += ClosingTrainer;
@@ -250,7 +250,7 @@ internal sealed class Trainer : Form
         toggle.Text = on ? "PROTECTION ON  ·  F7 to turn off" : "PROTECTION OFF  ·  F7 to turn on";
         toggle.BackColor = on ? Color.FromArgb(27, 100, 86) : Color.FromArgb(48, 49, 66);
         scoreToggle.Enabled = attached;
-        scoreToggle.Text = scoreEnabled ? (scoreApplied ? "SCORE BOOST ON  ·  F8 to turn off" : "SCORE BOOST ON  ·  Waiting for mission") : "SCORE BOOST OFF  ·  F8 to turn on";
+        scoreToggle.Text = scoreEnabled ? (scoreApplied ? "SCORE BOOST ON  ·  F8 to turn off" : "SCORE BOOST ARMED  ·  Waiting for mission") : "SCORE BOOST OFF  ·  F8 to turn on";
         scoreToggle.BackColor = scoreEnabled ? Color.FromArgb(107, 69, 130) : Color.FromArgb(48, 49, 66);
     }
     void ClosingTrainer(object sender, FormClosingEventArgs e)

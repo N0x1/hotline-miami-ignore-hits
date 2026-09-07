@@ -26,7 +26,7 @@ A boolean-looking state does not establish its storage width, and bypassing a st
 
 The native globals accessor at `0x407890` indexes eight-byte wrappers using the pointer at preferred VA `0xFFFCD8`. Each wrapper's second dword points to a typed value object. Its expected vtable is `0xAB8BF4`, type is at +4, and payload is at +8. Getter `0x8D4E90` dispatches type 1 to an int32 read and type 2 to a double read. The utility supports both without changing types, ownership pointers or vtables.
 
-The score reset routine `0x805BC0` identifies globals `drawscore=0x254`, `myscore=0x69`, `killscore=0x24A` and `time=0x24F`. Initialization `0x805DC0` identifies `currentlevel=0x271`. Results initializer `0x5C0BD0` resets `myscore`, copies `killscore` to bonus[0], then totals the bonus array into `myscore`. Therefore a display-only edit would be lost; F8 raises the kill-score component as well.
+The score reset routine `0x805BC0` identifies globals `drawscore=0x254`, `myscore=0x69`, `killscore=0x24A` and `time=0x131`. Initialization `0x805DC0` identifies `currentlevel=0x271`. Results initializer `0x5C0BD0` resets `myscore`, copies `killscore` to bonus[0], then totals the bonus array into `myscore`. Therefore a display-only edit would be lost; F8 raises the kill-score component as well.
 
 The native max-points routine at `0x8131F0` contains 16 mission-specific values plus a 40,000 fallback; its largest value is 138,000. F8's 200,000 floor exceeds every extracted value. Rank calculation consumes `myscore` in the score-details initializer `0x6A7780`. The public source comparison uses strictly greater-than max points for A+.
 
@@ -40,3 +40,9 @@ F8 is a separate timer-driven data operation. It briefly suspends the target pro
 - [HLMWadExplorer archive reader](https://github.com/TcT2k/HLMWadExplorer/blob/master/WADArchive.cpp)
 
 Third-party game source and game assets are not included in this repository or its releases.
+
+## Mission detection correction (v1.0.1)
+
+The initial score implementation incorrectly inferred time=0x24F from reset ordering. Native gameplay code at 0x5D9E9B and 0x5DE0E1 increments global 0x131 by one; the results time bonus reads 0x131 at 0x5C0F92 and the details screen copies it at 0x6A7CB5. Live inspection confirmed 0x131 advanced while 0x24F stayed zero, which caused the perpetual waiting state.
+
+Fixtures now independently populate 0x131 and leave 0x24F zero. The old implementation fails this regression. The corrected implementation passes mid-mission activation, pre-mission arming, chapter index zero and restart transitions. Production code then successfully raised all three score fields from 0 to 200,000 in the running game while preserving both counters. See verification-live-score.txt; the final A+ grade remains unverified.

@@ -1,5 +1,12 @@
 # Changes
 
+## v1.0.1
+
+- Fix F8 staying on "Waiting for mission": read the actual mission timer instead of an unrelated counter.
+- F8 can be armed before a mission and automatically applies when its timer starts, including chapter index zero and mission restarts.
+- Add independent regression fixtures that reproduce the original failure and verify the corrected address against native timer increments and results calculations.
+- Confirm a live score update from 0 to 200,000 in the running game. Final A+ result confirmation remains pending.
+
 ## v1.0
 
 - F8 independently toggles a 200,000-point floor for the mission kill-score bonus and current/displayed score. Existing higher scores are preserved.
