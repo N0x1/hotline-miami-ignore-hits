@@ -28,6 +28,8 @@ Press the same key again to switch an option off. Both options work independentl
 
 ## Source and tests
 
-Build with `./build.ps1` in Windows PowerShell; run automated checks with `./test.ps1`. Uses the Windows .NET Framework compiler.
+The repository contains development source, tests and research. Ready-to-run downloads are on the Releases page; `dist/` is generated locally when you build.
+
+Build with `./build.ps1` in Windows PowerShell; run automated checks with `./tests/run.ps1`. Uses the Windows .NET Framework compiler.
 
 See [changes](https://github.com/N0x1/hotline-miami-ignore-hits/blob/main/CHANGELOG.md), [technical findings and references](https://github.com/N0x1/hotline-miami-ignore-hits/blob/main/RESEARCH.md), and [research tools](https://github.com/N0x1/hotline-miami-ignore-hits/blob/main/research/README.md) for details.

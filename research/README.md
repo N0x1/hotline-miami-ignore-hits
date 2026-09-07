@@ -26,4 +26,4 @@ Get-Content verification-memory.txt
 
 The self-test uses memory allocated by its own process. Neither this test nor offline x86 emulation establishes actual gameplay behaviour; see the root README for the pending combat checks.
 
-`./test.ps1` also compiles an owned 32-bit fixture process and tests the native F8 pause/read/write/resume path against it. It never attaches that test to the game.
+`./tests/run.ps1` also compiles an owned 32-bit fixture process and tests the native F8 pause/read/write/resume path against it. It never attaches that test to the game.

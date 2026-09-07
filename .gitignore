@@ -4,12 +4,8 @@
 !/research/requirements.txt
 !/research/README.md
 
-# Keep the initial testable binary/package with its source baseline.
-/dist/*
-!/dist/HotlineMiami-IgnoreHits.exe
-!/dist/HotlineMiami-IgnoreHits.zip
-!/dist/HotlineMiami-IgnoreHits-v*.exe
-!/dist/HotlineMiami-IgnoreHits-v*.zip
+# Build outputs are distributed through GitHub Releases.
+/dist/
 
 *.log
 __pycache__/
@@ -20,7 +16,3 @@ bin/
 obj/
 *.user
 *.suo
-
-# Superseded development downloads remain available in Git history.
-/dist/HotlineMiami-IgnoreHits-v0.2.exe
-/dist/HotlineMiami-IgnoreHits-v0.2.zip
